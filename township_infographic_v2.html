@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Township — Your Dream Address</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --gold: #D4A843;
+    --deep: #1A1F2E;
+    --card: #232A3B;
+    --teal: #2ECBCB;
+    --coral: #FF6B6B;
+    --sage: #6BCB77;
+    --lavender: #9B8EC4;
+    --sky: #4DB8FF;
+    --warm: #FF9F43;
+    --text: #E8EAF0;
+    --muted: #8892A4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(212,168,67,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(46,203,203,0.06) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ── */
+  .page-title {
+    text-align: center;
+    margin-bottom: 14px;
+    animation: fadeDown 0.8s ease both;
+  }
+  .page-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--gold);
+    letter-spacing: 2px;
+    line-height: 1.1;
+  }
+  .page-title .tagline {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1rem;
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+  .page-title p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 6px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(212,168,67,0.4), transparent);
+    margin: 20px 0 40px;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 50px; animation: fadeUp 0.7s ease both; }
+  .section:nth-child(2) { animation-delay: 0.05s; }
+  .section:nth-child(3) { animation-delay: 0.1s; }
+  .section:nth-child(4) { animation-delay: 0.15s; }
+  .section:nth-child(5) { animation-delay: 0.2s; }
+  .section:nth-child(6) { animation-delay: 0.25s; }
+  .section:nth-child(7) { animation-delay: 0.3s; }
+  .section:nth-child(8) { animation-delay: 0.35s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+  }
+  .section-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to right, currentColor, transparent);
+    opacity: 0.3;
+  }
+
+  /* ── BUTTONS (amenity, plot, road, water) ── */
+  .btn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+    gap: 12px;
+  }
+
+  .feat-btn {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 18px 14px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s, background 0.22s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feat-btn::after {
+    content: 'Tap to know more';
+    position: absolute;
+    bottom: -30px;
+    left: 0; right: 0;
+    font-size: 0.62rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: bottom 0.22s;
+  }
+  .feat-btn:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(0,0,0,0.35); border-color: var(--gold); }
+  .feat-btn:hover::after { bottom: 6px; }
+  .feat-btn .b-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+  .feat-btn .b-label { font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+
+  /* plot size buttons */
+  .plot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+  .plot-btn {
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 22px 14px 18px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+  }
+  .plot-btn .fill {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(212,168,67,0.2), transparent);
+  }
+  .plot-btn:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(0,0,0,0.35); border-color: var(--gold); }
+  .plot-btn .p-sqft { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gold); font-weight: 900; position: relative; }
+  .plot-btn .p-unit { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; position: relative; }
+
+  /* road buttons */
+  .road-grid { display: flex; gap: 14px; flex-wrap: wrap; }
+  .road-btn {
+    flex: 1; min-width: 110px;
+    background: linear-gradient(135deg, var(--card), rgba(35,42,59,0.6));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 22px 14px;
+    text-align: center;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+  }
+  .road-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 4px;
+    background: var(--sky);
+    border-radius: 2px 2px 0 0;
+  }
+  .road-btn:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(0,0,0,0.3); border-color: var(--sky); }
+  .road-btn .r-ft { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--sky); font-weight: 900; }
+  .road-btn .r-lbl { font-size: 0.7rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+
+  /* water buttons */
+  .water-grid { display: flex; gap: 14px; flex-wrap: wrap; }
+  .water-btn {
+    flex: 1; min-width: 140px;
+    background: var(--card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-top: 3px solid var(--teal);
+    border-radius: 16px;
+    padding: 22px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.22s, box-shadow 0.22s;
+  }
+  .water-btn:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(0,0,0,0.3); }
+  .water-btn .w-icon { font-size: 2rem; margin-bottom: 8px; }
+  .water-btn .w-cap { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--teal); }
+  .water-btn .w-lbl { font-size: 0.72rem; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
+
+  /* shape / type chips as buttons */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip-btn {
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    border: 1.5px solid;
+    cursor: pointer;
+    transition: all 0.22s;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .chip-btn:hover { transform: scale(1.07); }
+  .chip-shape { border-color: var(--teal); color: var(--teal); }
+  .chip-shape:hover { background: rgba(46,203,203,0.15); }
+  .chip-type  { border-color: var(--lavender); color: var(--lavender); }
+  .chip-type:hover  { background: rgba(155,142,196,0.15); }
+
+  /* cost buttons */
+  .cost-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .cost-btn {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-left: 4px solid var(--gold);
+    cursor: pointer;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+    transition: transform 0.22s, box-shadow 0.22s;
+  }
+  .cost-btn:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(0,0,0,0.3); }
+  .cost-btn .c-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+  .cost-btn .c-value { font-family: 'Playfair Display', serif; font-size: 1.5rem; }
+  .cost-btn .c-sub { font-size: 0.74rem; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+
+  /* network button */
+  .network-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(107,203,119,0.15), rgba(107,203,119,0.04));
+    border: 1.5px solid var(--sage);
+    border-radius: 40px;
+    padding: 16px 32px;
+    font-size: 1rem; color: var(--sage); font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.22s, box-shadow 0.22s, background 0.22s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .network-btn:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(107,203,119,0.2); background: rgba(107,203,119,0.2); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,13,22,0.85);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.28s;
+    padding: 20px;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--card);
+    border-radius: 24px;
+    padding: 36px 32px;
+    max-width: 420px; width: 100%;
+    border: 1px solid rgba(255,255,255,0.08);
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+  .modal-emoji { font-size: 3rem; margin-bottom: 14px; display: block; }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem; color: var(--gold); margin-bottom: 10px;
+  }
+  .modal-tagline {
+    font-size: 1rem; font-weight: 600; color: var(--text);
+    margin-bottom: 14px; line-height: 1.5;
+  }
+  .modal-desc {
+    font-size: 0.88rem; color: var(--muted); line-height: 1.7;
+  }
+  .modal-close {
+    position: absolute; top: 18px; right: 20px;
+    background: rgba(255,255,255,0.08);
+    border: none; color: var(--muted);
+    width: 32px; height: 32px; border-radius: 50%;
+    font-size: 1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.15); color: var(--text); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .btn-grid { grid-template-columns: repeat(2, 1fr); }
+    .road-grid, .water-grid { flex-direction: column; }
+    .modal { padding: 28px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <span class="modal-emoji" id="m-emoji">🏠</span>
+    <div class="modal-title" id="m-title">Club House</div>
+    <div class="modal-tagline" id="m-tagline">Where life gets social.</div>
+    <div class="modal-desc" id="m-desc">Description here.</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="page-title">
+  <h1>Your Dream Address</h1>
+  <div class="tagline">"Not just a plot. A lifetime of living well."</div>
+  <p style="margin-top:14px;">Tap any feature to discover why it matters</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- AMENITIES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(212,168,67,0.15);color:var(--gold);">🏙️</div>
+    <div class="section-title" style="color:var(--gold);">Amenities</div>
+    <div class="section-line" style="color:var(--gold);"></div>
+  </div>
+  <div class="btn-grid">
+    <button class="feat-btn" onclick="open_modal('🏠','Club House','Your tribe lives here.','The Club House is the heartbeat of this township — a space where neighbours become friends, deals are made over chai, and weekends feel like mini-vacations. This is where community is born.')">
+      <span class="b-icon">🏠</span><span class="b-label">Club House</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🏥','Health Clinic','Wellness, right where you live.','No more driving 20 minutes for a routine check-up. A dedicated health clinic inside the township means your family\'s health is always just a walk away. Peace of mind — literally at your doorstep.')">
+      <span class="b-icon">🏥</span><span class="b-label">Health Clinic</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🏫','School','Great futures start close to home.','Imagine your kids walking to school instead of stuck in a bus for an hour. A school within the township means more time for them to be kids — and more sanity for you.')">
+      <span class="b-icon">🏫</span><span class="b-label">School</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🔥','Fire Pit Zone','Where stories are born under the stars.','Evenings around the fire pit with your family and neighbours — no city noise, no rush. Just warmth, laughter, and the kind of moments you\'ll talk about for decades.')">
+      <span class="b-icon">🔥</span><span class="b-label">Fire Pit Zone</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🏋️','Open Air Gym','Sweat in the open, live in the free.','Ditch the claustrophobic gym memberships. Work out with fresh air in your lungs and a sky above your head. Your health routine just got a serious upgrade.')">
+      <span class="b-icon">🏋️</span><span class="b-label">Open Air Gym</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('⛩️','Temple','A sacred space, always near.','Begin your mornings with stillness. A temple within the township means your spiritual life is as well-planned as your physical one. Balance, built in.')">
+      <span class="b-icon">⛩️</span><span class="b-label">Temple</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🌿','Pergola','Breathe. Pause. Belong.','The pergola is your outdoor living room — dappled sunlight, a good book, and no screens required. A rare luxury that most city homes can only dream of.')">
+      <span class="b-icon">🌿</span><span class="b-label">Pergola</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🏡','Gazebo','Romance lives here.','Morning tea, evening conversations, anniversary dinners — the gazebo makes every ordinary moment feel extraordinary. It\'s the detail that makes guests say \"Wow.\"')">
+      <span class="b-icon">🏡</span><span class="b-label">Gazebo</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🌳','Parks','Green is the new luxury.','In a world of concrete, having parks at your feet is priceless. Let your kids run free, your elders walk in peace, and your lungs breathe what they deserve.')">
+      <span class="b-icon">🌳</span><span class="b-label">Parks</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🏐','Volleyball Court','Serve, spike, smile.','Stay fit, stay social. A volleyball court that turns a random Tuesday evening into something you actually look forward to. Community health, one match at a time.')">
+      <span class="b-icon">🏐</span><span class="b-label">Volleyball Court</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🏊','Swimming Pool','Your private resort, every single day.','Sunday mornings in the pool without leaving home. Beat the heat, de-stress after work, and give your kids the childhood they deserve — a pool that\'s actually yours.')">
+      <span class="b-icon">🏊</span><span class="b-label">Swimming Pool</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🎭','Amphitheater','Where your township comes alive.','Cultural evenings, school plays, festive gatherings — the amphitheater turns your township into a village in the best possible sense. A stage for life itself.')">
+      <span class="b-icon">🎭</span><span class="b-label">Amphitheater</span>
+    </button>
+    <button class="feat-btn" onclick="open_modal('🌄','Multi Purpose Lawn','Space to just... be.','Cricket with the kids, yoga at sunrise, a neighbour\'s birthday bash — the multipurpose lawn adapts to every mood. Open space is the rarest gift you can give your family.')">
+      <span class="b-icon">🌄</span><span class="b-label">Multi Purpose Lawn</span>
+    </button>
+  </div>
+</div>
+
+<!-- PLOT SIZES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(255,159,67,0.15);color:var(--warm);">📐</div>
+    <div class="section-title" style="color:var(--warm);">Plot Sizes</div>
+    <div class="section-line" style="color:var(--warm);"></div>
+  </div>
+  <div class="plot-grid">
+    <button class="plot-btn" onclick="open_modal('📐','1,119 sq.ft.','The smart starter.','Perfectly sized for a compact, modern home. Spend less, live smart, and watch your investment grow. The best entry point into a township that will only appreciate.')">
+      <div class="fill" style="height:28%;"></div>
+      <div class="p-sqft">1,119</div><div class="p-unit">sq. ft.</div>
+    </button>
+    <button class="plot-btn" onclick="open_modal('📐','1,210 sq.ft.','Room to breathe, room to grow.','A little more space for a little more life. Build the home you imagined — with a garden corner, a sit-out, or just that extra room you always wanted.')">
+      <div class="fill" style="height:38%;"></div>
+      <div class="p-sqft">1,210</div><div class="p-unit">sq. ft.</div>
+    </button>
+    <button class="plot-btn" onclick="open_modal('📐','1,453 sq.ft.','The sweet spot.','Not too big, not too small — just right. A plot size that gives your architect real freedom and your family real comfort. The most popular choice for a reason.')">
+      <div class="fill" style="height:52%;"></div>
+      <div class="p-sqft">1,453</div><div class="p-unit">sq. ft.</div>
+    </button>
+    <button class="plot-btn" onclick="open_modal('📐','1,722 sq.ft.','Built for those who think big.','A generous canvas for a generous life. Double parking, a lush garden, a home office — this size lets you design without compromise.')">
+      <div class="fill" style="height:68%;"></div>
+      <div class="p-sqft">1,722</div><div class="p-unit">sq. ft.</div>
+    </button>
+    <button class="plot-btn" onclick="open_modal('📐','1,869 sq.ft.','The crown jewel.','When you want the best address in the best township — this is it. Spacious, prestigious, and rare. Your legacy home starts here.')">
+      <div class="fill" style="height:85%;"></div>
+      <div class="p-sqft">1,869</div><div class="p-unit">sq. ft.</div>
+    </button>
+  </div>
+</div>
+
+<!-- PLOT TYPES & SHAPES -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(155,142,196,0.15);color:var(--lavender);">🔷</div>
+    <div class="section-title" style="color:var(--lavender);">Plot Type & Shape</div>
+    <div class="section-line" style="color:var(--lavender);"></div>
+  </div>
+  <div style="margin-bottom:16px;">
+    <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Type</div>
+    <div class="chip-row">
+      <button class="chip-btn chip-type" onclick="open_modal('🔷','Corner Plot','Premium position. Premium life.','Corner plots are the most sought-after for a reason — extra road frontage, more light, better ventilation, and a home that stands out from the block. A cut above the rest, literally.')">Corner Plot</button>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;">Shape</div>
+    <div class="chip-row">
+      <button class="chip-btn chip-shape" onclick="open_modal('▬','Rectangle','Classic. Efficient. Timeless.','Rectangular plots are the architect\'s favourite — maximum usable area, zero wasted space, and the freedom to build exactly what you envision. Simple is always smart.')">Rectangle</button>
+      <button class="chip-btn chip-shape" onclick="open_modal('⬛','Square','Perfectly balanced.','A square plot gives your home perfect symmetry and equal frontage on all sides. Ideal for spacious rooms, central courtyards, and homes that feel naturally grand.')">Square</button>
+      <button class="chip-btn chip-shape" onclick="open_modal('🔺','Trapezium','Uniquely yours.','A trapezium plot lets your architect think creatively — angled walls, a wider frontage, and a home with a character that no rectangle can replicate. Own something truly one-of-a-kind.')">Trapezium</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROADS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(77,184,255,0.15);color:var(--sky);">🛣️</div>
+    <div class="section-title" style="color:var(--sky);">Road Widths</div>
+    <div class="section-line" style="color:var(--sky);"></div>
+  </div>
+  <div class="road-grid">
+    <button class="road-btn" onclick="open_modal('🛣️','9 ft Roads','Calm lanes. Safe lives.','Internal lanes designed for peaceful, slow-speed movement — perfect for kids on cycles, elders on walks, and a neighbourhood that actually feels like one.')">
+      <div class="r-ft">9</div><div class="r-lbl">ft lanes</div>
+    </button>
+    <button class="road-btn" onclick="open_modal('🛣️','12 ft Roads','Smooth flows. Every day.','Main internal roads at 12 ft ensure comfortable two-way movement. No bottlenecks, no honking — just a smooth drive home every single evening.')">
+      <div class="r-ft">12</div><div class="r-lbl">ft roads</div>
+    </button>
+    <button class="road-btn" onclick="open_modal('🛣️','15 ft Roads','Grand entrances. Always.','The widest arterial roads make every arrival feel like a grand welcome. Easy access for guests, emergency vehicles, and moving trucks — because a great township thinks of everything.')">
+      <div class="r-ft">15</div><div class="r-lbl">ft avenues</div>
+    </button>
+  </div>
+</div>
+
+<!-- WATER SUPPLY -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(46,203,203,0.15);color:var(--teal);">💧</div>
+    <div class="section-title" style="color:var(--teal);">Water Supply</div>
+    <div class="section-line" style="color:var(--teal);"></div>
+  </div>
+  <div class="water-grid">
+    <button class="water-btn" onclick="open_modal('🏗️','2.5 Lakh L Overhead Tank','Never a dry tap. Ever.','A 2.5 lakh litre overhead tank means gravity-fed, consistent pressure to every home, every hour. No pumps. No waiting. Just water — the way it should be.')">
+      <div class="w-icon">🏗️</div>
+      <div class="w-cap">2.5L</div>
+      <div class="w-lbl">Overhead Tank</div>
+    </button>
+    <button class="water-btn" onclick="open_modal('💧','2.5 Lakh L Underground Tank','Your water security. Underground.','A massive underground reserve ensures your township is water-independent even during the driest summers. Because real luxury is never running out of what matters most.')">
+      <div class="w-icon">⬇️</div>
+      <div class="w-cap">2.5L</div>
+      <div class="w-lbl">Underground Tank</div>
+    </button>
+  </div>
+</div>
+
+<!-- NETWORK -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(107,203,119,0.15);color:var(--sage);">🌐</div>
+    <div class="section-title" style="color:var(--sage);">Connectivity</div>
+    <div class="section-line" style="color:var(--sage);"></div>
+  </div>
+  <button class="network-btn" onclick="open_modal('🌐','Network Ready','Work from home. For real.','Future-ready fibre and network infrastructure built right into the township. Whether you\'re on a Zoom call or streaming 4K, your connection is as strong as your investment. Welcome to the township that lives in 2030.')">
+    <span>🌐</span><span>Network Ready Township — Tap to learn more</span>
+  </button>
+</div>
+
+<!-- BUSINESS DETAILS -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:rgba(255,107,107,0.15);color:var(--coral);">💰</div>
+    <div class="section-title" style="color:var(--coral);">Investment Details</div>
+    <div class="section-line" style="color:var(--coral);"></div>
+  </div>
+  <div class="cost-grid">
+    <button class="cost-btn" style="border-left-color:var(--coral);" onclick="open_modal('💰','Plot Pricing','Every rupee. Justified.','Priced to reflect real value — not inflated promises. Transparent, size-based pricing means you pay exactly for what you get, in a township engineered to appreciate. This is money well spent.')">
+      <div class="c-label">Cost / Price</div>
+      <div class="c-value" style="color:var(--coral);">Plot-based</div>
+      <div class="c-sub">Fair, transparent & tied to plot size. Every paisa has a purpose.</div>
+    </button>
+    <button class="cost-btn" style="border-left-color:var(--lavender);" onclick="open_modal('🔧','Maintenance','Your township. Always pristine.','No more fighting with committees or chasing vendors. Professional maintenance ensures your roads stay clean, lights stay on, and common areas stay beautiful — so your investment stays protected.')">
+      <div class="c-label">Maintenance</div>
+      <div class="c-value" style="color:var(--lavender);">Managed</div>
+      <div class="c-sub">A well-kept township is a well-valued one. Included & planned.</div>
+    </button>
+    <button class="cost-btn" style="border-left-color:var(--warm);" onclick="open_modal('🏛️','Stamp Duty','Clear. Legal. Yours.','Stamp duty is paid by the government\'s book — no shortcuts, no surprises. Your ownership is rock-solid, legally registered, and worth every rupee of the process.')">
+      <div class="c-label">Stamp Duty</div>
+      <div class="c-value" style="color:var(--warm);">Govt. Rates</div>
+      <div class="c-sub">Legal clarity is the foundation of lasting ownership.</div>
+    </button>
+    <button class="cost-btn" style="border-left-color:var(--sage);" onclick="open_modal('📋','Registration','Signed. Sealed. Yours forever.','Simple, guided registration with zero confusion. We handle the paperwork so you can focus on what matters — planning the home you\'ve always imagined.')">
+      <div class="c-label">Registration</div>
+      <div class="c-value" style="color:var(--sage);">Hassle-free</div>
+      <div class="c-sub">From application to ownership — smooth, swift, supported.</div>
+    </button>
+    <button class="cost-btn" style="border-left-color:var(--sky);" onclick="open_modal('📁','File Handling','We take care of the paperwork.','Documentation can be a nightmare — but not here. Every form, every file, every signature — handled with care so your journey from buyer to owner is completely stress-free.')">
+      <div class="c-label">File Handling</div>
+      <div class="c-value" style="color:var(--sky);">Handled</div>
+      <div class="c-sub">You dream it. We document it. Zero headaches, guaranteed.</div>
+    </button>
+    <button class="cost-btn" style="border-left-color:var(--teal);" onclick="open_modal('🏦','Corpus Fund','Your township\'s safety net.','The corpus fund is a one-time contribution that keeps your township self-sufficient for years. Think of it as an insurance policy for the quality of life you\'ve invested in. Smart communities plan ahead.')">
+      <div class="c-label">Corpus Fund</div>
+      <div class="c-value" style="color:var(--teal);">One-time</div>
+      <div class="c-sub">A single investment that keeps your township thriving for decades.</div>
+    </button>
+  </div>
+</div>
+
+<div style="text-align:center;margin-top:40px;color:var(--muted);font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;padding-bottom:20px;">
+  Your Forever Address — Tap Any Feature To Explore
+</div>
+
+<script>
+  const overlay = document.getElementById('modal');
+
+  function open_modal(emoji, title, tagline, desc) {
+    document.getElementById('m-emoji').textContent = emoji;
+    document.getElementById('m-title').textContent = title;
+    document.getElementById('m-tagline').textContent = tagline;
+    document.getElementById('m-desc').textContent = desc;
+    overlay.classList.add('open');
+  }
+
+  function closeModal(e) {
+    if (e.target === overlay) overlay.classList.remove('open');
+  }
+
+  function closeModalBtn() {
+    overlay.classList.remove('open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') overlay.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>
