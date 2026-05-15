@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plot Cost Breakdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a4a2e;
+    --gold: #c9a84c;
+    --light: #f5f0e8;
+    --white: #ffffff;
+    --muted: #6b7c6e;
+    --accent: #e8f5e9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light);
+    color: var(--green);
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+
+  .page {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .header {
+    background: var(--green);
+    color: var(--white);
+    border-radius: 16px 16px 0 0;
+    padding: 28px 32px 20px;
+    border-bottom: 4px solid var(--gold);
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .project-tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .tab {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--gold);
+    color: rgba(255,255,255,0.7);
+    background: transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .tab.active {
+    background: var(--gold);
+    color: var(--green);
+  }
+
+  .body {
+    background: var(--white);
+    padding: 28px 32px;
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 8px 40px rgba(26,74,46,0.12);
+  }
+
+  /* Plot Info Row */
+  .info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .info-card {
+    background: var(--accent);
+    border-radius: 10px;
+    padding: 14px 16px;
+    border-left: 4px solid var(--gold);
+  }
+
+  .info-card .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .info-card .value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  .info-card .unit {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* Section */
+  .section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  /* Rate Table */
+  .rate-block {
+    margin-bottom: 24px;
+  }
+
+  .rate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .rate-row.main {
+    background: var(--green);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .rate-row.deduct {
+    background: #fff3e0;
+    color: #8B4513;
+  }
+
+  .rate-row.effective {
+    background: #e8f5e9;
+    color: var(--green);
+    font-weight: 700;
+    border: 2px solid var(--gold);
+  }
+
+  .rate-row .tag {
+    font-size: 11px;
+    background: rgba(255,255,255,0.2);
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .rate-row.deduct .tag { background: rgba(139,69,19,0.1); color: #8B4513; }
+  .rate-row.effective .tag { background: var(--gold); color: var(--green); }
+
+  /* Charges */
+  .charges-block {
+    margin-bottom: 24px;
+  }
+
+  .charge-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 5px;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+  }
+
+  .charge-row .label { color: var(--muted); }
+  .charge-row .amount { font-weight: 600; color: var(--green); }
+
+  /* Total Box */
+  .total-box {
+    background: var(--green);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+
+  .total-box .row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .total-box .divider {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    margin: 12px 0;
+  }
+
+  .total-box .grand {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* EMI Block */
+  .emi-block {
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid #c8e6c9;
+  }
+
+  .emi-block .emi-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .emi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+
+  .emi-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+    border-top: 3px solid var(--gold);
+  }
+
+  .emi-card .emi-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .emi-card .emi-val { font-size: 16px; font-weight: 700; color: var(--green); margin-top: 4px; }
+  .emi-card .emi-sub { font-size: 10px; color: var(--muted); }
+
+  /* FSI Tag */
+  .fsi-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+
+  .fsi-badge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--green);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+  }
+
+  .note {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 20px;
+    font-style: italic;
+  }
+
+  /* Selector buttons */
+  .selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .sel-btn {
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--green);
+    color: var(--green);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+
+  .sel-btn.active {
+    background: var(--green);
+    color: var(--white);
+  }
+
+  @media print {
+    body { padding: 0; background: white; }
+    .page { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Plot Cost Breakdown</h1>
+    <div class="subtitle">Detailed Financial Summary · Riyasat Bliss</div>
+    <div class="project-tabs">
+      <button class="tab active" onclick="switchProject('bliss')">Riyasat Bliss</button>
+      <button class="tab" onclick="switchProject('sankalp')">Sankalp</button>
+      <button class="tab" onclick="switchProject('meadows')">Meadows</button>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- Plot Info -->
+    <div class="info-row">
+      <div class="info-card">
+        <div class="label">Plot Size</div>
+        <div class="value">1119.46 <span class="unit">sq.ft</span></div>
+      </div>
+      <div class="info-card">
+        <div class="label">Base Rate</div>
+        <div class="value">₹7,000 <span class="unit">/sq.ft</span></div>
+      </div>
+      <div class="info-card">
+        <div class="label">FSI</div>
+        <div class="value" id="fsi-val">1.62</div>
+      </div>
+    </div>
+
+    <!-- Rate Calculation -->
+    <div class="rate-block">
+      <div class="section-title">Rate Calculation</div>
+
+      <div class="rate-row main">
+        <span>Base Rate</span>
+        <span>₹7,000 / sq.ft <span class="tag">Bliss</span></span>
+      </div>
+
+      <div class="rate-row deduct">
+        <span>Less: Maintenance Charge</span>
+        <span>− ₹180 <span class="tag">per sq.ft</span></span>
+      </div>
+
+      <div class="rate-row deduct">
+        <span>Less: Corpus Fund</span>
+        <span>− ₹50 <span class="tag">per sq.ft</span></span>
+      </div>
+
+      <div class="rate-row effective">
+        <span>✦ Effective Land Rate</span>
+        <span>₹6,770 / sq.ft <span class="tag">Net</span></span>
+      </div>
+    </div>
+
+    <!-- Charges -->
+    <div class="charges-block">
+      <div class="section-title">Cost Components</div>
+
+      <div class="charge-row">
+        <span class="label">Plot Cost (6770 × 1119.46)</span>
+        <span class="amount">₹75,78,744</span>
+      </div>
+      <div class="charge-row">
+        <span class="label">Total Cost of Plot (as quoted)</span>
+        <span class="amount">₹78,36,220</span>
+      </div>
+      <div class="charge-row">
+        <span class="label">Registration Charges</span>
+        <span class="amount">₹32,000</span>
+      </div>
+    </div>
+
+    <!-- Grand Total -->
+    <div class="total-box">
+      <div class="row"><span>Plot Cost</span><span>₹78,36,220</span></div>
+      <div class="row"><span>Registration</span><span>₹32,000</span></div>
+      <hr class="divider">
+      <div class="grand"><span>Grand Total</span><span>₹83,22,944 *</span></div>
+    </div>
+
+    <!-- EMI / Payment -->
+    <div class="emi-block">
+      <div class="emi-title">💰 Payment Snapshot</div>
+      <div class="emi-grid">
+        <div class="emi-card">
+          <div class="emi-label">Down Payment</div>
+          <div class="emi-val">₹40L</div>
+          <div class="emi-sub">Upfront</div>
+        </div>
+        <div class="emi-card">
+          <div class="emi-label">Loan Amount</div>
+          <div class="emi-val">₹43.22L</div>
+          <div class="emi-sub">Balance</div>
+        </div>
+        <div class="emi-card">
+          <div class="emi-label">Est. EMI</div>
+          <div class="emi-val">₹10,751</div>
+          <div class="emi-sub">~7240 base</div>
+        </div>
+      </div>
+
+      <div class="fsi-row">
+        <span class="fsi-badge">FSI 1.62 — Bliss</span>
+        <span class="fsi-badge">FSI 1.49 — Meadows</span>
+        <span class="fsi-badge">FSI 1.51 — Sankalp</span>
+      </div>
+    </div>
+
+    <p class="note">* All figures are approximate. Subject to final agreement & registration actuals.</p>
+
+  </div>
+</div>
+
+<script>
+  const projects = {
+    bliss:   { name: 'Riyasat Bliss', rate: 7000, net: 6770, fsi: '1.62', plot: 7836220, reg: 32000, grand: 8322944, dp: 40, loan: 43.22, emi: 10751 },
+    sankalp: { name: 'Sankalp',       rate: 7100, net: 6870, fsi: '1.51', plot: 7690000, reg: 32000, grand: 8000000, dp: 40, loan: 40, emi: 10200 },
+    meadows: { name: 'Meadows',       rate: 7100, net: 6870, fsi: '1.49', plot: 7690000, reg: 32000, grand: 8000000, dp: 40, loan: 40, emi: 10200 },
+  };
+
+  function switchProject(key) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    const p = projects[key];
+    document.querySelector('.header h1').textContent = 'Plot Cost Breakdown';
+    document.querySelector('.header .subtitle').textContent = `Detailed Financial Summary · ${p.name}`;
+    document.getElementById('fsi-val').textContent = p.fsi;
+  }
+
+  document.querySelectorAll('.sel-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.sel-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
