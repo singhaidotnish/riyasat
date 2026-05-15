@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Riyasat Bliss – Canvas Infographic</title>
+<style>
+  body {
+    margin: 0;
+    background: #dde4e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: sans-serif;
+    padding: 30px 0;
+  }
+  canvas {
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  button {
+    margin-top: 18px;
+    padding: 10px 28px;
+    background: #3ab5a0;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+  button:hover { background: #2e9a87; }
+</style>
+</head>
+<body>
+<canvas id="c" width="700" height="920"></canvas>
+<button onclick="download()">⬇ Download as PNG</button>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+const W = canvas.width;
+const H = canvas.height;
+
+// ── COLORS ──
+const COLORS = {
+  teal:   '#3ab5a0',
+  orange: '#e07b3c',
+  blue:   '#2e7bb5',
+  gold:   '#c8960a',
+  red:    '#c0392b',
+  dark:   '#1a2236',
+  bg:     '#f4f7f6',
+  white:  '#ffffff',
+  textDark: '#1a2236',
+  textGray: '#6b7a8d',
+};
+
+// ── STEP DATA ──
+const steps = [
+  {
+    color: COLORS.teal,
+    icon: '📢',
+    title: 'LOCATION & APPROVAL',
+    heading: 'RERA Registered',
+    body: 'Fully approved residential\nplot project in Pune.',
+    badge: 'RERA: P52000079379',
+    dir: 'left', // pill on left
+  },
+  {
+    color: COLORS.orange,
+    icon: '📐',
+    title: 'PLOT SIZES',
+    heading: 'Flexible Plot Options',
+    body: 'Choose from a wide range of\nsizes to fit your dream home.',
+    badge: '1,119 – 3,000 sq ft',
+    dir: 'right', // pill on right
+  },
+  {
+    color: COLORS.blue,
+    icon: '💰',
+    title: 'PRICING',
+    heading: 'Competitive Rates',
+    body: 'Tiered pricing based on\nroad-facing & plot size.',
+    badge: '₹6,500 – ₹7,000 / sq ft',
+    dir: 'left',
+  },
+  {
+    color: COLORS.gold,
+    icon: '🏗️',
+    title: 'INFRASTRUCTURE',
+    heading: 'Wide Roads + Water',
+    body: 'Roads: 9/12/15 ft\nOHT: 2.5L · UGT: 2.5L',
+    badge: 'FSI: 1.62',
+    dir: 'right',
+  },
+  {
+    color: COLORS.red,
+    icon: '🗝️',
+    title: 'POSSESSION',
+    heading: 'Dec 2025 Delivery',
+    body: 'Full development potential\nwith FSI of 1.62.',
+    badge: 'Dec 2025',
+    dir: 'left',
+  },
+];
+
+// ── HELPERS ──
+function roundRect(x, y, w, h, r, fill, stroke, strokeW) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+  if (fill)   { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = strokeW || 3; ctx.stroke(); }
+}
+
+function circle(cx, cy, r, fill, stroke, strokeW) {
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  if (fill)   { ctx.fillStyle = fill; ctx.fill(); }
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = strokeW || 5; ctx.stroke(); }
+}
+
+function shadow(blur, color) {
+  ctx.shadowBlur = blur;
+  ctx.shadowColor = color || 'rgba(0,0,0,0.15)';
+}
+function noShadow() {
+  ctx.shadowBlur = 0;
+  ctx.shadowColor = 'transparent';
+}
+
+// Draw S-curve connector between two rows
+function drawConnector(fromX, fromY, toX, toY, color) {
+  const midY = (fromY + toY) / 2;
+  ctx.beginPath();
+  ctx.moveTo(fromX, fromY);
+  ctx.bezierCurveTo(fromX, midY, toX, midY, toX, toY);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 28;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // highlight stripe
+  ctx.beginPath();
+  ctx.moveTo(fromX, fromY);
+  ctx.bezierCurveTo(fromX, midY, toX, midY, toX, toY);
+  ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+  ctx.lineWidth = 10;
+  ctx.stroke();
+}
+
+// ── DRAW ──
+async function draw() {
+  // Background
+  roundRect(0, 0, W, H, 20, COLORS.bg);
+
+  // Subtle bg gradient
+  const grad = ctx.createRadialGradient(W*0.8, 60, 10, W*0.8, 60, 400);
+  grad.addColorStop(0, 'rgba(58,181,160,0.07)');
+  grad.addColorStop(1, 'rgba(58,181,160,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── HEADER ──
+  ctx.fillStyle = COLORS.teal;
+  ctx.font = 'bold 11px sans-serif';
+  ctx.letterSpacing = '3px';
+  ctx.textAlign = 'center';
+  ctx.fillText('PROJECT HIGHLIGHTS', W/2, 52);
+  ctx.letterSpacing = '0px';
+
+  ctx.fillStyle = COLORS.dark;
+  ctx.font = 'bold 40px Georgia, serif';
+  ctx.fillText('Riyasat Bliss', W/2, 98);
+
+  // teal underline accent
+  ctx.fillStyle = COLORS.teal;
+  ctx.font = 'bold 40px Georgia, serif';
+  // just color the word Bliss
+  const rw = ctx.measureText('Riyasat ').width;
+  const bw = ctx.measureText('Bliss').width;
+  const totalW = ctx.measureText('Riyasat Bliss').width;
+  ctx.fillText('Bliss', W/2 + totalW/2 - bw, 98);
+
+  ctx.fillStyle = COLORS.dark;
+  ctx.fillText('Riyasat', W/2 - totalW/2 + ctx.measureText('Riyasat').width/2 - ctx.measureText('Riyasat').width/2, 98);
+
+  ctx.fillStyle = COLORS.textGray;
+  ctx.font = '600 13px sans-serif';
+  ctx.fillText('Smart Living Plots · Pune · RERA Approved', W/2, 122);
+
+  // divider
+  const dg = ctx.createLinearGradient(W/2-40, 0, W/2+40, 0);
+  dg.addColorStop(0, COLORS.teal);
+  dg.addColorStop(1, COLORS.orange);
+  ctx.fillStyle = dg;
+  roundRect(W/2 - 40, 134, 80, 4, 2, dg);
+
+  // ── STEPS ──
+  const startY = 170;
+  const rowH   = 130; // spacing between step centers
+  const pillW  = 230;
+  const pillH  = 56;
+  const circR  = 42;
+  const bubbleW = 220;
+  const bubbleH = 100;
+  const margin  = 28; // from edge
+
+  // preload emoji as text (canvas native)
+  for (let i = 0; i < steps.length; i++) {
+    const s = steps[i];
+    const cy = startY + i * rowH + pillH / 2; // center Y of this row
+    const isLeft = s.dir === 'left';
+
+    // positions
+    const pillX  = isLeft ? margin : W - margin - pillW;
+    const pillY  = cy - pillH / 2;
+    const circCX = isLeft ? margin + pillW + circR - 10 : W - margin - pillW - circR + 10;
+    const circCY = cy;
+    const bubX   = isLeft ? circCX + circR - 8 : circCX - circR + 8 - bubbleW;
+    const bubY   = cy - bubbleH / 2;
+
+    // ── connector to next step ──
+    if (i < steps.length - 1) {
+      const next = steps[i + 1];
+      const nextIsLeft = next.dir === 'left';
+      // connector goes from end of this pill to start of next pill
+      const fromX = isLeft ? margin + pillW / 2 : W - margin - pillW / 2;
+      const toX   = nextIsLeft ? margin + pillW / 2 : W - margin - pillW / 2;
+      const fromY = cy + pillH / 2 - 4;
+      const toY   = cy + rowH - pillH / 2 + 4;
+
+      // blend color
+      drawConnector(fromX, fromY, toX, toY,
+        lerpColor(s.color, next.color, 0.5));
+    }
+
+    // ── bubble (draw first so circle overlaps) ──
+    shadow(12);
+    roundRect(bubX, bubY, bubbleW, bubbleH, 14, COLORS.white);
+    noShadow();
+
+    // bubble heading
+    ctx.fillStyle = s.color;
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = isLeft ? 'left' : 'left';
+    ctx.fillText(s.heading.toUpperCase(), bubX + 14, bubY + 22);
+
+    // bubble body
+    ctx.fillStyle = COLORS.textGray;
+    ctx.font = '600 11px sans-serif';
+    const lines = s.body.split('\n');
+    lines.forEach((line, li) => {
+      ctx.fillText(line, bubX + 14, bubY + 38 + li * 15);
+    });
+
+    // badge
+    roundRect(bubX + 14, bubY + 72, bubbleW - 28, 20, 10, COLORS.bg, s.color, 1.5);
+    ctx.fillStyle = s.color;
+    ctx.font = 'bold 10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.badge, bubX + bubbleW / 2, bubY + 86);
+
+    // ── pill ──
+    shadow(14, 'rgba(0,0,0,0.18)');
+    roundRect(pillX, pillY, pillW, pillH, pillH / 2, s.color);
+    noShadow();
+
+    ctx.fillStyle = COLORS.white;
+    ctx.font = 'bold 12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.title, pillX + pillW / 2, pillY + pillH / 2 + 5);
+
+    // ── circle ──
+    shadow(16, 'rgba(0,0,0,0.15)');
+    circle(circCX, circCY, circR, COLORS.white, s.color, 5);
+    noShadow();
+
+    // icon emoji
+    ctx.font = '28px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(s.icon, circCX, circCY + 2);
+    ctx.textBaseline = 'alphabetic';
+  }
+
+  // ── STATS BAR ──
+  const statsY = startY + steps.length * rowH + 10;
+  const statsH = 90;
+  shadow(20, 'rgba(0,0,0,0.2)');
+  roundRect(margin, statsY, W - margin * 2, statsH, 16, COLORS.dark);
+  noShadow();
+
+  const stats = [
+    { val: '1119+', lbl: 'Min sq ft' },
+    { val: '1.62',  lbl: 'FSI' },
+    { val: '₹6.5K', lbl: 'Rate/sq ft' },
+    { val: '2.5L',  lbl: 'OHT / UGT' },
+    { val: "Dec'25",lbl: 'Possession' },
+  ];
+
+  const slotW = (W - margin * 2) / stats.length;
+  stats.forEach((st, i) => {
+    const sx = margin + i * slotW + slotW / 2;
+
+    ctx.fillStyle = COLORS.teal;
+    ctx.font = 'bold 22px Georgia, serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(st.val, sx, statsY + 42);
+
+    ctx.fillStyle = '#8ab';
+    ctx.font = 'bold 10px sans-serif';
+    ctx.letterSpacing = '0.5px';
+    ctx.fillText(st.lbl.toUpperCase(), sx, statsY + 62);
+    ctx.letterSpacing = '0px';
+
+    // divider
+    if (i < stats.length - 1) {
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(margin + (i + 1) * slotW, statsY + 20);
+      ctx.lineTo(margin + (i + 1) * slotW, statsY + statsH - 20);
+      ctx.stroke();
+    }
+  });
+
+  // footer note
+  ctx.fillStyle = COLORS.textGray;
+  ctx.font = '500 10px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('RERA: P52000079379  ·  All figures subject to final agreement', W / 2, H - 16);
+}
+
+// color lerp
+function lerpColor(a, b, t) {
+  const ah = parseInt(a.slice(1), 16);
+  const bh = parseInt(b.slice(1), 16);
+  const ar = ah >> 16, ag = (ah >> 8) & 0xff, ab = ah & 0xff;
+  const br = bh >> 16, bg = (bh >> 8) & 0xff, bb = bh & 0xff;
+  const rr = Math.round(ar + (br - ar) * t);
+  const rg = Math.round(ag + (bg - ag) * t);
+  const rb = Math.round(ab + (bb - ab) * t);
+  return `rgb(${rr},${rg},${rb})`;
+}
+
+function download() {
+  const link = document.createElement('a');
+  link.download = 'riyasat_bliss_infographic.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+draw();
+</script>
+</body>
+</html>
