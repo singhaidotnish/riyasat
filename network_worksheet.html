@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network Building Business — Jaipur Plots</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #161922;
+    --card: #1e2330;
+    --border: #2a3045;
+    --accent: #f5a623;
+    --accent2: #4ecdc4;
+    --accent3: #ff6b6b;
+    --text: #e8eaf0;
+    --muted: #7a8199;
+    --green: #56cf8f;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: fadeDown .6s ease both;
+  }
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .sub {
+    color: var(--muted);
+    font-size: .85rem;
+    margin-top: 6px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ─── HERO STAT ─── */
+  .hero-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 28px;
+    animation: fadeUp .6s .1s ease both;
+  }
+  .hero-stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 22px;
+    text-align: center;
+    min-width: 130px;
+  }
+  .hero-stat .val {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+  .hero-stat .lbl {
+    font-size: .72rem;
+    color: var(--muted);
+    margin-top: 2px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  /* ─── SECTION LABEL ─── */
+  .sec-label {
+    font-family: 'Syne', sans-serif;
+    font-size: .75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+    margin-top: 28px;
+  }
+
+  /* ─── PROJECTS TABLE ─── */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    animation: fadeUp .6s .2s ease both;
+  }
+  .proj-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .proj-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 14px 14px 0 0;
+  }
+  .proj-card.b2::before { background: linear-gradient(90deg, var(--accent2), var(--green)); }
+  .proj-card.b3::before { background: linear-gradient(90deg, var(--accent3), var(--accent)); }
+  .proj-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+  .proj-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: .8rem;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .proj-row:last-child { border-bottom: none; }
+  .proj-row span:last-child { color: var(--text); font-family: 'DM Mono', monospace; font-weight: 500; }
+
+  /* ─── DAILY ACTIVITY ─── */
+  .activity-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 10px;
+    animation: fadeUp .6s .3s ease both;
+  }
+  .act-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .act-box .num {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent2);
+  }
+  .act-box .label { font-size: .7rem; color: var(--muted); margin-top: 3px; }
+
+  /* ─── COMMISSION TABLE ─── */
+  .comm-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .82rem;
+    animation: fadeUp .6s .35s ease both;
+  }
+  .comm-table th {
+    background: var(--surface);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding: 9px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .comm-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+  }
+  .comm-table tr:last-child td { border-bottom: none; }
+  .comm-table tr:hover td { background: var(--surface); }
+  .comm-table .rate { color: var(--accent); font-weight: 500; }
+  .comm-table .earn { color: var(--green); font-weight: 500; }
+  .comm-table .earn2 { color: var(--accent2); font-weight: 500; }
+  .comm-table td.range-col { color: var(--text); }
+
+  /* ─── EARNING CALC ─── */
+  .earn-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    animation: fadeUp .6s .4s ease both;
+  }
+  .earn-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .earn-card .title {
+    font-size: .7rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 8px;
+  }
+  .earn-card .amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+  .earn-card .note { font-size: .72rem; color: var(--muted); margin-top: 4px; }
+  .c-orange { color: var(--accent); }
+  .c-teal   { color: var(--accent2); }
+  .c-green  { color: var(--green); }
+  .c-red    { color: var(--accent3); }
+
+  /* ─── NISHI SECTION ─── */
+  .nishi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .8rem;
+    animation: fadeUp .6s .45s ease both;
+  }
+  .nishi-table th {
+    background: var(--surface);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: .68rem;
+    text-transform: uppercase;
+    padding: 8px 10px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+  }
+  .nishi-table th:first-child { text-align: left; }
+  .nishi-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    text-align: right;
+    color: var(--muted);
+  }
+  .nishi-table td:first-child { text-align: left; color: var(--text); }
+  .nishi-table tr:last-child td { border-bottom: none; color: var(--text); font-weight: 600; }
+  .nishi-table .hi { color: var(--green); }
+
+  /* ─── ZONE / CALC ─── */
+  .calc-row {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: .85rem;
+    animation: fadeUp .6s .5s ease both;
+  }
+  .calc-row .desc { color: var(--muted); }
+  .calc-row .val  { font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 600; color: var(--accent); }
+
+  /* ─── ANIM ─── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:none; } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(18px);  } to { opacity:1; transform:none; } }
+
+  /* wrapper */
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .card-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🏗️ Network Plot Business</h1>
+    <div class="sub">Jaipur · Commission Worksheet · 1 Month View</div>
+  </div>
+
+  <!-- HERO STATS -->
+  <div class="hero-bar">
+    <div class="hero-stat">
+      <div class="val">266</div>
+      <div class="lbl">Plots Sold / Month</div>
+    </div>
+    <div class="hero-stat">
+      <div class="val">50</div>
+      <div class="lbl">Plots / Day</div>
+    </div>
+    <div class="hero-stat">
+      <div class="val">900</div>
+      <div class="lbl">Scripts / Month</div>
+    </div>
+    <div class="hero-stat">
+      <div class="val">24</div>
+      <div class="lbl">Team Members</div>
+    </div>
+  </div>
+
+  <!-- DAILY ACTIVITY -->
+  <div class="sec-label">📋 Daily Activity Formula</div>
+  <div class="activity-grid">
+    <div class="act-box">
+      <div class="num">5</div>
+      <div class="label">Hours / Day</div>
+    </div>
+    <div class="act-box">
+      <div class="num">×3</div>
+      <div class="label">Sessions</div>
+    </div>
+    <div class="act-box">
+      <div class="num">×20</div>
+      <div class="label">= 100 Calls/Day</div>
+    </div>
+  </div>
+  <div class="calc-row" style="margin-top:10px;">
+    <span class="desc">Script target → 100 calls ÷ 3 buckets</span>
+    <span class="val">~33 / bucket</span>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="sec-label">🏘️ Projects</div>
+  <div class="projects">
+    <div class="proj-card b1">
+      <div class="proj-name">Riyasat Sankalp</div>
+      <div class="proj-row"><span>RERA</span><span>P52000054353</span></div>
+      <div class="proj-row"><span>FSI</span><span>1.51</span></div>
+      <div class="proj-row"><span>Plot Size</span><span>1119 – 6300 sqft</span></div>
+      <div class="proj-row"><span>Roads</span><span>9 / 12 / 30 ft</span></div>
+      <div class="proj-row"><span>OHT / UGT</span><span>2.5L / 2.5L</span></div>
+      <div class="proj-row"><span>Price (₹/sqyd)</span><span>7100 / 7000 / 6800 / 6600</span></div>
+      <div class="proj-row"><span>Possession</span><span>Oct 2025</span></div>
+    </div>
+    <div class="proj-card b2">
+      <div class="proj-name">Sankalp Meadows <span style="font-size:.7rem;color:var(--muted)">(Phase 2)</span></div>
+      <div class="proj-row"><span>FSI</span><span>1.49</span></div>
+      <div class="proj-row"><span>Plot Size</span><span>1119+ sqft</span></div>
+      <div class="proj-row"><span>Roads</span><span>9 / 12 / 30 ft</span></div>
+      <div class="proj-row"><span>OHT / UGT</span><span>2.5L / 1L</span></div>
+      <div class="proj-row"><span>Price (₹/sqyd)</span><span>7100 / 7000 / 6800 / 6600</span></div>
+      <div class="proj-row"><span>Possession</span><span>Oct 2025</span></div>
+    </div>
+    <div class="proj-card b3">
+      <div class="proj-name">Riyasat Bliss</div>
+      <div class="proj-row"><span>RERA</span><span>P52000079379</span></div>
+      <div class="proj-row"><span>FSI</span><span>1.62</span></div>
+      <div class="proj-row"><span>Plot Size</span><span>1119 – 3000 sqft</span></div>
+      <div class="proj-row"><span>Roads</span><span>9 / 12 / 15 ft</span></div>
+      <div class="proj-row"><span>OHT / UGT</span><span>2.5L / 2.5L</span></div>
+      <div class="proj-row"><span>Price (₹/sqyd)</span><span>7000 / 6900 / 6700 / 6500</span></div>
+      <div class="proj-row"><span>Possession</span><span>Dec 2025</span></div>
+    </div>
+  </div>
+
+  <!-- COMMISSION SLABS -->
+  <div class="sec-label">💰 Commission Slabs (per sqyd sale)</div>
+  <div class="card-wrap">
+    <table class="comm-table">
+      <thead>
+        <tr>
+          <th>Plot Value Range (₹)</th>
+          <th>Sqyd Size</th>
+          <th>Rate %</th>
+          <th>Comm × 1 sale</th>
+          <th>Comm × 2 sales</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="range-col">0 – 2,249</td>
+          <td>~22.22 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹22,222</td>
+          <td class="earn2">₹44,444</td>
+        </tr>
+        <tr>
+          <td class="range-col">2,250 – 4,499</td>
+          <td>~27.77 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹27,777</td>
+          <td class="earn2">₹55,554</td>
+        </tr>
+        <tr>
+          <td class="range-col">4,500 – 8,999</td>
+          <td>~33.33 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹33,333</td>
+          <td class="earn2">₹66,666</td>
+        </tr>
+        <tr>
+          <td class="range-col">9,000 – 17,999</td>
+          <td>~44.44 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹44,444</td>
+          <td class="earn2">₹88,888</td>
+        </tr>
+        <tr>
+          <td class="range-col">18,000 – 31,499</td>
+          <td>~55.55 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹55,555</td>
+          <td class="earn2">₹1,11,110</td>
+        </tr>
+        <tr>
+          <td class="range-col">31,500 – 53,999</td>
+          <td>~66.66 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹66,666</td>
+          <td class="earn2">₹1,33,332</td>
+        </tr>
+        <tr>
+          <td class="range-col">54,000 – 89,999</td>
+          <td>~77.77 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹77,777</td>
+          <td class="earn2">₹1,55,554</td>
+        </tr>
+        <tr>
+          <td class="range-col">90,000+</td>
+          <td>~88.88 sqyd</td>
+          <td class="rate">—</td>
+          <td class="earn">₹88,888</td>
+          <td class="earn2">₹1,77,776</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NISHI EXAMPLE -->
+  <div class="sec-label">🧮 Example: NISHI (200 Sqyd Plot · Zone 3)</div>
+  <div class="card-wrap">
+    <table class="nishi-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Sqyd</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Plot 1 — 1119.46 sqyd</td>
+          <td>1119.46</td>
+          <td class="hi">₹49,753</td>
+        </tr>
+        <tr>
+          <td>Plot 2 — 2152.10 sqyd</td>
+          <td>2152.10</td>
+          <td class="hi">₹2,360</td>
+        </tr>
+        <tr>
+          <td>Plot 3 (200 Yard Zone 3)</td>
+          <td>327 – 59</td>
+          <td class="hi">₹11,957</td>
+        </tr>
+        <tr>
+          <td><strong>Subtotal</strong></td>
+          <td>—</td>
+          <td><strong>₹63,323 – ₹47,022</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Total Estimated Earn</strong></td>
+          <td>—</td>
+          <td class="hi"><strong>~₹84,552</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MONTHLY EARNINGS SNAPSHOT -->
+  <div class="sec-label">📈 Monthly Earning Snapshot</div>
+  <div class="earn-grid">
+    <div class="earn-card">
+      <div class="title">If 1 Sale / Day</div>
+      <div class="amount c-orange">₹22K – ₹88K</div>
+      <div class="note">Depends on plot size tier</div>
+    </div>
+    <div class="earn-card">
+      <div class="title">If 2 Sales / Day</div>
+      <div class="amount c-green">₹44K – ₹1.77L</div>
+      <div class="note">Per person per day</div>
+    </div>
+    <div class="earn-card">
+      <div class="title">Team of 24</div>
+      <div class="amount c-teal">266 plots</div>
+      <div class="note">Monthly sold out target</div>
+    </div>
+    <div class="earn-card">
+      <div class="title">Script Pipeline</div>
+      <div class="amount c-red">900 / mo</div>
+      <div class="note">100/day × 9 working days</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NOTE -->
+  <div style="text-align:center; margin-top:32px; color:var(--muted); font-size:.75rem; font-family:'DM Mono',monospace;">
+    All figures from field notes · Riyasat Group Jaipur · 2025
+  </div>
+
+</div>
+</body>
+</html>
