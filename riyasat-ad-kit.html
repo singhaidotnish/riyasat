@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riyasat Group — Ad Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --dark: #0A0A0A;
+    --surface: #111111;
+    --surface2: #1A1A1A;
+    --text: #F0EDE8;
+    --muted: #888;
+    --border: rgba(201,168,76,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 20px auto 0;
+  }
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 600;
+    color: var(--text);
+  }
+  .header p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 300;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    background: var(--surface);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 7px;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .tab.active {
+    background: var(--gold);
+    color: #000;
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  .section { display: none; max-width: 800px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .card p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #BDB9B2;
+    margin-bottom: 10px;
+  }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* COPY BLOCK */
+  .copy-block {
+    background: var(--surface2);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 18px 20px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--text);
+    white-space: pre-wrap;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+  }
+  .copy-block .copy-btn {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.2s;
+  }
+  .copy-btn:hover { opacity: 0.85; }
+
+  /* HOOK PILLS */
+  .hooks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .hook-pill {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border);
+    color: var(--gold-light);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .hook-pill:hover {
+    background: rgba(201,168,76,0.2);
+  }
+
+  /* VISUAL FRAME */
+  .visual-frame {
+    aspect-ratio: 1;
+    max-width: 360px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #0d1117 0%, #1a1200 50%, #0d0d0d 100%);
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .visual-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.12) 0%, transparent 65%);
+  }
+  .vf-tag {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .vf-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .vf-sub {
+    font-size: 12px;
+    color: var(--muted);
+    position: relative;
+  }
+  .vf-cta {
+    margin-top: 20px;
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+  }
+
+  /* STORY FRAME */
+  .story-frame {
+    aspect-ratio: 9/16;
+    max-width: 240px;
+    margin: 0 auto 20px;
+    background: linear-gradient(170deg, #0d1117 0%, #1a1200 60%, #0d0d0d 100%);
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .story-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 20%, rgba(201,168,76,0.15) 0%, transparent 60%);
+  }
+  .sf-content { position: relative; }
+  .sf-kicker { font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+  .sf-headline { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; line-height: 1.25; margin-bottom: 8px; }
+  .sf-body { font-size: 11px; color: #999; line-height: 1.6; margin-bottom: 14px; }
+  .sf-cta {
+    background: var(--gold);
+    color: #000;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+    padding: 9px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* SCENE CARDS for script */
+  .scene {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+  }
+  .scene-num {
+    min-width: 36px;
+    height: 36px;
+    background: var(--gold);
+    color: #000;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    flex-shrink: 0;
+  }
+  .scene-body { flex: 1; }
+  .scene-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .scene-time {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .scene-text {
+    font-size: 14px;
+    line-height: 1.75;
+    color: #BDB9B2;
+  }
+  .scene-visual {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* HASHTAG BLOCK */
+  .hashtag-block {
+    font-size: 12px;
+    color: var(--gold-light);
+    line-height: 2;
+    word-break: break-all;
+  }
+
+  /* INFO ROW */
+  .info-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .info-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #BDB9B2;
+  }
+  .info-chip span { color: var(--gold); font-weight: 500; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  /* ANIMATE IN */
+  .card { animation: fadeUp 0.4s ease both; }
+  .card:nth-child(2) { animation-delay: 0.08s; }
+  .card:nth-child(3) { animation-delay: 0.16s; }
+  .card:nth-child(4) { animation-delay: 0.24s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .tabs { flex-direction: column; }
+    body { padding: 20px 14px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">Riyasat Group · Ad Kit 2025</div>
+  <h1>Social Media Ad Toolkit</h1>
+  <p>Instagram · YouTube · Reels · Stories — Lead Generation</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('copy')">📝 Ad Copy</button>
+  <button class="tab" onclick="switchTab('visual')">🎨 Visual Concepts</button>
+  <button class="tab" onclick="switchTab('script')">🎬 Video Script</button>
+  <button class="tab" onclick="switchTab('extras')">✦ Hashtags & Tips</button>
+</div>
+
+<!-- ==================== AD COPY ==================== -->
+<div class="section active" id="copy">
+
+  <div class="card">
+    <div class="card-label">Hook A — For Investors</div>
+    <h3>The Land Mumbai's Airport Made Valuable</h3>
+    <div class="copy-block" id="copy1"><button class="copy-btn" onclick="copyText('copy1')">Copy</button>🏙️ Navi Mumbai is not the future. It's already happening.
+
+Navi Mumbai International Airport. Atal Setu. MMRDA master plan. Data centres. SEZs.
+
+Every major infrastructure bet of the last decade is landing in one corridor.
+
+📍 Riyasat Group plots — Panvel & Nadhal
+✅ RERA Approved
+✅ Starting ₹7,000/sq ft
+✅ Plots from 1,119 sq ft
+✅ Ready possession
+
+While others are still deciding, the smart money has already moved.
+
+👇 Drop a ✋ or DM "INVEST" — we'll share the full project details.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Hook B — For First-Time Buyers</div>
+    <h3>Your Name. Your Land. Forever.</h3>
+    <div class="copy-block" id="copy2"><button class="copy-btn" onclick="copyText('copy2')">Copy</button>🌿 Still paying rent?
+
+There's a different kind of ownership — the kind that lasts generations.
+
+Riyasat Group brings you RERA-approved residential plots near Navi Mumbai.
+
+✅ Wide roads (upto 30 ft)
+✅ Full water supply (OHT + UGT)
+✅ Clean title. No ambiguity.
+✅ Plots from just 1,119 sq ft
+
+This is where families are being built.
+
+📩 DM us "HOME" and we'll help you understand your options — zero pressure.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Hook C — For NRI / Working Professionals</div>
+    <h3>Buy Land Near Mumbai. While You Can Still Afford It.</h3>
+    <div class="copy-block" id="copy3"><button class="copy-btn" onclick="copyText('copy3')">Copy</button>📈 In 2005, Dubai was "too early."
+In 2010, Gurgaon was "too far."
+In 2015, Thane was "too risky."
+
+Mumbai's next chapter is being written in Navi Mumbai — and the plots are still available.
+
+Riyasat Group | RERA Approved | Panvel & Nadhal
+
+💰 Starting ₹7,000/sq ft
+📐 Plots: 1,119 – 6,300 sq ft
+🏗️ Possession ready
+
+Stop waiting. The window is now.
+
+🔗 Click the link in bio or comment "INFO" to receive the full brochure.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Short Hook — Reel / Story Caption (15 sec attention)</div>
+    <h3>Ultra-Short Copy Variations</h3>
+    <div class="hooks">
+      <div class="hook-pill">🏙️ Mumbai is full. Navi Mumbai is next. Are you in?</div>
+      <div class="hook-pill">Your plot. RERA approved. Near Navi Mumbai Airport. DM "PLOT"</div>
+      <div class="hook-pill">Land near Mumbai. Starting ₹7K/sq ft. Limited plots. Comment INFO.</div>
+      <div class="hook-pill">Not crypto. Not stocks. Land. Near Mumbai. Real. Yours forever.</div>
+      <div class="hook-pill">Someone will buy this plot. Will it be you? 👇</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== VISUAL CONCEPTS ==================== -->
+<div class="section" id="visual">
+
+  <div class="card">
+    <div class="card-label">Instagram Feed Post — Square (1:1)</div>
+    <div class="visual-frame">
+      <div class="vf-tag">Riyasat Group · RERA Approved</div>
+      <div class="vf-headline">The Land<br>Mumbai's Airport<br>Made Valuable.</div>
+      <div class="vf-sub">Plots from ₹7,000/sq ft · Panvel & Nadhal</div>
+      <button class="vf-cta">DM "INVEST" to Know More</button>
+    </div>
+    <p style="font-size:13px; color: var(--muted); text-align:center;">↑ Preview of layout concept (dark/gold theme)</p>
+    <hr class="divider">
+    <div class="card-label">Art Direction Notes</div>
+    <p><strong style="color:var(--gold)">Background:</strong> Aerial drone shot of the Navi Mumbai coastline / airport site at golden hour. Deep dark overlay (70% opacity) so text pops.</p>
+    <p><strong style="color:var(--gold)">Typography:</strong> Large serif headline (Cormorant / Playfair) + small caps label in gold. Minimal. Breathe.</p>
+    <p><strong style="color:var(--gold)">Color:</strong> Dark navy/charcoal base + gold (#C9A84C) accents. No white backgrounds.</p>
+    <p><strong style="color:var(--gold)">Logo:</strong> White Riyasat logo top-left. RERA number bottom in small text.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Instagram Story / Reel Cover (9:16)</div>
+    <div class="story-frame">
+      <div class="sf-content">
+        <div class="sf-kicker">Navi Mumbai · Panvel</div>
+        <div class="sf-headline">Own Land.<br>Near the Airport<br>That Changes<br>Everything.</div>
+        <div class="sf-body">RERA Approved · Plots from 1,119 sq ft · Ready Possession</div>
+        <div class="sf-cta">DM "PLOT" for Details →</div>
+      </div>
+    </div>
+    <p style="font-size:13px; color: var(--muted); text-align:center;">↑ Story format concept</p>
+    <hr class="divider">
+    <div class="card-label">Art Direction Notes</div>
+    <p><strong style="color:var(--gold)">Top half:</strong> Dramatic sky / skyline video loop or still with gold-tinted gradient over it.</p>
+    <p><strong style="color:var(--gold)">Bottom half:</strong> Dark panel with text. Clean split-screen feel.</p>
+    <p><strong style="color:var(--gold)">Motion:</strong> Text fades in line by line. Use CapCut or Canva text animation. No over-the-top effects.</p>
+    <p><strong style="color:var(--gold)">Sticker:</strong> Add a "DM us" poll sticker or question box for engagement.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">YouTube Thumbnail (16:9)</div>
+    <hr class="divider" style="margin-top:0">
+    <p><strong style="color:var(--gold)">Layout:</strong> Split screen — left side: aerial shot of Navi Mumbai Airport + infrastructure. Right side: dark panel with big bold text.</p>
+    <p><strong style="color:var(--gold)">Headline on thumbnail:</strong> <em style="color:var(--text)">"Navi Mumbai Land — The Next Dubai?"</em> or <em style="color:var(--text)">"I Bought a Plot Near the New Airport (Here's Why)"</em></p>
+    <p><strong style="color:var(--gold)">Human face:</strong> Add a confident presenter face (yours or a team member) in the corner — thumbnails with faces get 38% more CTR.</p>
+    <p><strong style="color:var(--gold)">Colors:</strong> Gold text on dark. Red/orange accent for urgency word (e.g., "NOW", "2025").</p>
+  </div>
+
+</div>
+
+<!-- ==================== VIDEO SCRIPT ==================== -->
+<div class="section" id="script">
+
+  <div class="card">
+    <div class="card-label">Instagram Reel Script — 30–45 Seconds</div>
+    <h3>"The 3 Reasons Smart Investors Are Buying in Navi Mumbai Right Now"</h3>
+
+    <div class="scene">
+      <div class="scene-num">1</div>
+      <div class="scene-body">
+        <div class="scene-title">Hook — 0–3 sec</div>
+        <div class="scene-text">"If you're still ignoring Navi Mumbai, I want you to hear this."</div>
+        <div class="scene-visual">📹 Close-up face to camera. Confident. Direct eye contact.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">2</div>
+      <div class="scene-body">
+        <div class="scene-title">Problem — 3–10 sec</div>
+        <div class="scene-text">"Mumbai property is out of reach. Rents are rising. And most 'investment options' are either too risky or too slow."</div>
+        <div class="scene-visual">📹 B-roll: crowded city, rent receipts, stock charts.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">3</div>
+      <div class="scene-body">
+        <div class="scene-title">Solution — 10–25 sec</div>
+        <div class="scene-text">"That's why people are buying plotted land in Navi Mumbai — Panvel and Nadhal. Reason one: the airport. Reason two: Atal Setu connectivity. Reason three: RERA-approved plots still available under ₹7,000 a square foot."</div>
+        <div class="scene-visual">📹 Cut between: airport visuals → bridge visuals → site footage of Riyasat project.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">4</div>
+      <div class="scene-body">
+        <div class="scene-title">Credibility — 25–35 sec</div>
+        <div class="scene-text">"Riyasat Group. RERA registered. Multiple projects. Wide roads, water supply, clear title. Possession ready."</div>
+        <div class="scene-visual">📹 Walk through the site or show project layout renders.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">5</div>
+      <div class="scene-body">
+        <div class="scene-title">CTA — 35–45 sec</div>
+        <div class="scene-text">"If you want the full details — RERA number, pricing, plot sizes — just DM me the word PLOT. I'll send everything to you personally."</div>
+        <div class="scene-visual">📹 Back to face. Point at screen. Confident close.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">YouTube Long-Form Script — 3–5 Min</div>
+    <h3>"Why I'd Buy Land in Navi Mumbai Before 2026 (Full Breakdown)"</h3>
+
+    <div class="scene">
+      <div class="scene-num">1</div>
+      <div class="scene-body">
+        <div class="scene-title">Intro Hook — 0–30 sec</div>
+        <div class="scene-text">"In the 1990s, if you had bought land on the outskirts of Dubai — people would have called you crazy. Today those plots are worth 50x. Navi Mumbai is at that exact moment right now — and most people don't see it yet."</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">2</div>
+      <div class="scene-body">
+        <div class="scene-title">The Infrastructure Story — 30 sec – 2 min</div>
+        <div class="scene-text">Cover: Navi Mumbai International Airport (game changer for Panvel corridor) → Atal Setu Bridge (22 min to South Mumbai) → MMRDA planned smart city zones → Data centre corridor forming → New expressways already built.<br><br><em style="color:var(--muted)">Show maps, drone footage, news clips as B-roll.</em></div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">3</div>
+      <div class="scene-body">
+        <div class="scene-title">Why Plots Beat Flats — 2–3 min</div>
+        <div class="scene-text">"Flats depreciate over time. Land never does. With a plot, you own the land — you can build on it, lease it, sell it, or hold it. And with FSI of 1.5+, you can construct a 2–3 floor home on it yourself."<br><br>Talk about: No maintenance. No society. No builder dependency. Full ownership.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">4</div>
+      <div class="scene-body">
+        <div class="scene-title">Riyasat Group Introduction — 3–4 min</div>
+        <div class="scene-text">Introduce the projects: Riyasat Bliss, Sankalp, Meadows. Show RERA registration. Walk through plot sizes, pricing, infrastructure inside the project (roads, water tanks). Show possession status.</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-num">5</div>
+      <div class="scene-body">
+        <div class="scene-title">CTA Close — 4–5 min</div>
+        <div class="scene-text">"If this made sense to you — even a little — the next step is simple. Drop a comment with 'PLOT' or click the link in the description. I'll personally walk you through the options. No pressure, just clarity."</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== EXTRAS ==================== -->
+<div class="section" id="extras">
+
+  <div class="card">
+    <div class="card-label">Hashtag Set — Instagram</div>
+    <h3>Copy-Paste Hashtags</h3>
+    <div class="copy-block" id="hashtags"><button class="copy-btn" onclick="copyText('hashtags')">Copy</button>#RealEstate #NaviMumbai #PanvelRealEstate #PlotForSale #LandInvestment #MumbaiRealEstate #RERApproved #InvestInLand #NaviMumbaiAirport #AtalSetu #RiyasatGroup #PlottedDevelopment #PropertyInvestment #SmartInvestment #MumbaiProperty #RealEstateIndia #LandForSale #ResidentialPlots #MumbaiInvestors #BuildYourDream</div>
+    <div class="info-row">
+      <div class="info-chip">Use <span>5–7 niche</span> + <span>5–7 broad</span> tags</div>
+      <div class="info-chip">First comment > caption for hashtags</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Ad Targeting Tips — Meta (Instagram)</div>
+    <h3>Audience Setup Recommendations</h3>
+    <p><strong style="color:var(--gold)">Age:</strong> 28–55</p>
+    <p><strong style="color:var(--gold)">Locations:</strong> Mumbai, Pune, Thane, Navi Mumbai + NRI targeting (UAE, UK, USA — Indian expats)</p>
+    <p><strong style="color:var(--gold)">Interests:</strong> Real Estate, Property Investment, Stock Market, Mutual Funds, Personal Finance, Home Ownership</p>
+    <p><strong style="color:var(--gold)">Behaviours:</strong> Frequent travellers, High-income households, Online buyers</p>
+    <p><strong style="color:var(--gold)">Objective:</strong> Lead Generation (Meta Lead Form) — collect Name + Phone directly in-app. Don't send to website unless it's optimised.</p>
+    <p><strong style="color:var(--gold)">Budget tip:</strong> Start ₹300–500/day per ad set. Let it run 3 days before judging. A/B test Hook A vs Hook C first.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">YouTube SEO Tips</div>
+    <h3>Video Title Options</h3>
+    <div class="hooks">
+      <div class="hook-pill">Why I'd Buy Land Near Navi Mumbai Airport in 2025</div>
+      <div class="hook-pill">Navi Mumbai: The Next Dubai? (Full Investment Breakdown)</div>
+      <div class="hook-pill">RERA Approved Plots Near Mumbai — What You Need to Know</div>
+      <div class="hook-pill">Plots vs Flats: Which is Better Investment in 2025?</div>
+      <div class="hook-pill">Land Near Mumbai Under ₹7000/sqft — Is It Real?</div>
+    </div>
+    <hr class="divider">
+    <p><strong style="color:var(--gold)">Description must include:</strong> RERA numbers, project names, location keywords (Panvel, Nadhal, Navi Mumbai), phone/WhatsApp CTA, and a 150-word text summary of the video for SEO.</p>
+    <p><strong style="color:var(--gold)">Pin a comment</strong> with your WhatsApp link or "Comment PLOT for details" to capture leads from comments.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label">WhatsApp Follow-Up Template</div>
+    <h3>When a Lead Replies</h3>
+    <div class="copy-block" id="wa"><button class="copy-btn" onclick="copyText('wa')">Copy</button>Hi [Name] 👋
+
+Thanks for reaching out about Riyasat Group plots near Navi Mumbai.
+
+Here's a quick summary:
+
+📍 *Project:* Riyasat Bliss / Sankalp / Meadows (Panvel & Nadhal)
+✅ RERA Approved
+📐 Plot sizes: 1,119 – 6,300 sq ft
+💰 Starting at ₹7,000/sq ft
+🏗️ Possession: Ready
+
+These are plotted layouts with wide roads, full water supply, and clear legal title.
+
+I'd love to walk you through the options — would you prefer a call or should I share the full brochure here?
+
+Looking forward to connecting 🙏</div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', ['copy','visual','script','extras'][i] === id);
+  });
+  document.querySelectorAll('.section').forEach(s => {
+    s.classList.toggle('active', s.id === id);
+  });
+}
+
+function copyText(id) {
+  const el = document.getElementById(id);
+  const btn = el.querySelector('.copy-btn');
+  // Get text excluding button text
+  const clone = el.cloneNode(true);
+  clone.querySelector('.copy-btn')?.remove();
+  const text = clone.innerText || clone.textContent;
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>
